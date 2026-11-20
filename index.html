@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1c1220">
+<meta name="robots" content="noindex">
+<title>Sincère</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<style>
+:root{
+  --bg:#1c1220; --bg2:#271a2c; --carte:#2f2135; --ligne:#45334c;
+  --texte:#f6ece9; --doux:#bfa9b8; --corail:#ff8a6b; --corail2:#ffb39e;
+  --vert:#7fd1a8; --orange:#ffc66b; --rayon:18px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--texte);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:16px;line-height:1.5}
+button{font:inherit;color:inherit;cursor:pointer}
+a{color:var(--corail2)}
+.cache{display:none!important}
+
+/* ---------- En-tête ---------- */
+header{position:sticky;top:0;z-index:5;background:rgba(28,18,32,.94);backdrop-filter:blur(10px);
+  padding:calc(env(safe-area-inset-top) + 12px) 18px 10px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--ligne)}
+.logo{font-family:Georgia,"Times New Roman",serif;font-size:1.5rem;font-style:italic;letter-spacing:.5px}
+.logo span{color:var(--corail)}
+header .espace{flex:1}
+.btn-icone{background:var(--bg2);border:1px solid var(--ligne);border-radius:12px;padding:8px 11px;font-size:.85rem}
+
+main{padding:16px 16px calc(96px + env(safe-area-inset-bottom));max-width:720px;margin:0 auto}
+h2{font-family:Georgia,serif;font-weight:normal;font-size:1.45rem;margin:6px 0 4px}
+.sous{color:var(--doux);margin:0 0 16px;font-size:.95rem}
+
+/* ---------- Recherche & filtres ---------- */
+.recherche{width:100%;padding:13px 16px;border-radius:14px;border:1px solid var(--ligne);background:var(--bg2);color:var(--texte);font-size:1rem;margin-bottom:12px}
+.barre-filtres{display:flex;gap:8px;align-items:center;margin-bottom:14px;flex-wrap:wrap}
+.btn{background:var(--corail);color:#2a1210;border:none;border-radius:999px;padding:11px 18px;font-weight:600}
+.btn.sec{background:var(--bg2);color:var(--texte);border:1px solid var(--ligne)}
+.compteur{color:var(--doux);font-size:.9rem}
+.actifs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.actifs .puce{font-size:.8rem;padding:5px 10px}
+
+.panneau{background:var(--bg2);border:1px solid var(--ligne);border-radius:var(--rayon);padding:14px;margin-bottom:16px}
+.groupe{margin-bottom:14px}
+.groupe h4{margin:0 0 8px;font-size:.8rem;text-transform:uppercase;letter-spacing:1px;color:var(--doux);font-weight:600}
+.puces{display:flex;flex-wrap:wrap;gap:7px}
+.puce{background:var(--carte);border:1px solid var(--ligne);border-radius:999px;padding:7px 13px;font-size:.88rem}
+.puce.on{background:var(--corail);border-color:var(--corail);color:#2a1210;font-weight:600}
+.mode{display:flex;gap:8px;align-items:center;font-size:.85rem;color:var(--doux);margin-top:4px}
+
+/* ---------- Cartes ---------- */
+.carte{background:var(--carte);border:1px solid var(--ligne);border-radius:var(--rayon);padding:16px;margin-bottom:12px;position:relative}
+.carte h3{margin:0 34px 4px 0;font-size:1.08rem}
+.carte .resume{margin:6px 0 10px;color:#e9dbe0;font-size:.95rem}
+.meta{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+.tag{font-size:.75rem;background:var(--bg2);border-radius:8px;padding:3px 8px;color:var(--doux)}
+.tag.f{color:var(--corail2)}
+.fav{position:absolute;top:12px;right:12px;background:none;border:none;font-size:1.35rem;padding:4px}
+.score{display:flex;gap:3px;align-items:center;font-size:.78rem;color:var(--doux)}
+.score i{width:10px;height:10px;border-radius:50%;background:var(--ligne);display:inline-block}
+.score i.ok{background:var(--vert)}
+.plus{background:none;border:none;color:var(--corail2);padding:6px 0 0;font-size:.9rem}
+.detail{border-top:1px solid var(--ligne);margin-top:10px;padding-top:10px;font-size:.93rem}
+.crit{list-style:none;padding:0;margin:10px 0}
+.crit li{padding:3px 0;font-size:.88rem}
+.crit .non{color:#8e7b88}
+.avert{font-size:.8rem;color:var(--doux);margin-top:10px}
+.vide{text-align:center;color:var(--doux);padding:40px 10px}
+
+/* ---------- Quiz ---------- */
+.quiz-q{font-family:Georgia,serif;font-size:1.3rem;margin:10px 0 18px}
+.quiz-r{display:block;width:100%;text-align:left;background:var(--carte);border:1px solid var(--ligne);border-radius:14px;padding:15px 16px;margin-bottom:10px;font-size:1rem}
+.quiz-r:active{background:var(--corail);color:#2a1210}
+.progress{height:5px;background:var(--bg2);border-radius:9px;overflow:hidden;margin-bottom:6px}
+.progress div{height:100%;background:var(--corail);transition:width .3s}
+
+/* ---------- Apprendre ---------- */
+.module{display:flex;gap:14px;align-items:center;width:100%;text-align:left;background:var(--carte);border:1px solid var(--ligne);border-radius:var(--rayon);padding:15px;margin-bottom:10px}
+.module .em{font-size:1.7rem;width:44px;height:44px;display:grid;place-items:center;background:var(--bg2);border-radius:12px;flex-shrink:0}
+.module b{display:block}
+.module small{color:var(--doux)}
+.module .lu{margin-left:auto;color:var(--vert);font-size:.85rem}
+.lecture h3{color:var(--corail2);font-size:1.05rem;margin:22px 0 6px}
+.lecture p{margin:0 0 10px}
+.lecture ul{margin:0 0 10px;padding-left:20px}
+.lecture li{margin-bottom:5px}
+.retour{background:none;border:none;color:var(--corail2);padding:0;margin-bottom:10px}
+
+/* ---------- Navigation ---------- */
+nav{position:fixed;bottom:0;left:0;right:0;z-index:6;background:rgba(28,18,32,.97);border-top:1px solid var(--ligne);
+  display:flex;padding:8px 6px calc(8px + env(safe-area-inset-bottom))}
+nav button{flex:1;background:none;border:none;padding:6px 2px;font-size:.72rem;color:var(--doux);display:flex;flex-direction:column;align-items:center;gap:2px}
+nav button .ic{font-size:1.35rem}
+nav button.on{color:var(--corail)}
+
+/* ---------- Porte d'entrée 18+ ---------- */
+#porte{position:fixed;inset:0;z-index:50;background:var(--bg);display:flex;flex-direction:column;justify-content:center;padding:28px;text-align:center}
+#porte .logo{font-size:2.6rem;margin-bottom:6px}
+#porte p{color:var(--doux);max-width:420px;margin:8px auto}
+#porte .btn{margin:22px auto 10px;padding:14px 28px;font-size:1.05rem}
+#porte .petit{font-size:.8rem}
+
+/* ---------- Écran discret ---------- */
+#discret{position:fixed;inset:0;z-index:60;background:#f4f4f2;color:#333;padding:calc(env(safe-area-inset-top) + 24px) 22px;font-family:system-ui,sans-serif}
+#discret h1{font-size:1.3rem;font-weight:600;margin:0 0 18px}
+#discret .ligne{border-bottom:1px solid #ddd;padding:14px 0;display:flex;gap:12px;align-items:center}
+#discret .case{width:20px;height:20px;border:2px solid #999;border-radius:5px}
+#discret small{display:block;color:#aaa;margin-top:40px;text-align:center}
+</style>
+</head>
+<body>
+
+<!-- Porte 18+ -->
+<div id="porte">
+  <div class="logo">Sin<span>c</span>ère</div>
+  <p><b>Un guide vers des contenus érotiques respectueux, variés et fidèles à la réalité.</b></p>
+  <p>Cette appli ne contient aucune image ni vidéo explicite. Elle présente des plateformes et propose des contenus éducatifs. Les sites vers lesquels elle renvoie sont réservés aux adultes et vérifient eux-mêmes l'âge de leurs visiteurs.</p>
+  <button class="btn" id="btn-majeur">J'ai 18 ans ou plus</button>
+  <button class="btn sec" id="btn-mineur">J'ai moins de 18 ans</button>
+  <p class="petit" id="msg-mineur"></p>
+</div>
+
+<!-- Écran discret (bouton 👁) -->
+<div id="discret" class="cache">
+  <h1>Liste de courses</h1>
+  <div class="ligne"><div class="case"></div>Pain</div>
+  <div class="ligne"><div class="case"></div>Lait</div>
+  <div class="ligne"><div class="case"></div>Tomates</div>
+  <div class="ligne"><div class="case"></div>Café</div>
+  <div class="ligne"><div class="case"></div>Lessive</div>
+  <small>Appui long pour revenir</small>
+</div>
+
+<header>
+  <div class="logo">Sin<span>c</span>ère</div>
+  <div class="espace"></div>
+  <button class="btn-icone" id="btn-discret" title="Masquer l'écran">👁 Discret</button>
+</header>
+
+<main>
+  <!-- EXPLORER -->
+  <section id="v-explorer">
+    <h2>Explorer</h2>
+    <p class="sous">Des plateformes qui respectent les personnes, choisies pour leur variété.</p>
+    <input class="recherche" id="recherche" type="search" placeholder="Rechercher (ex. audio, couple, queer…)">
+    <div class="barre-filtres">
+      <button class="btn" id="btn-filtres">⚙️ Filtres</button>
+      <button class="btn sec cache" id="btn-effacer">Tout effacer</button>
+      <span class="compteur" id="compteur"></span>
+    </div>
+    <div class="actifs" id="actifs"></div>
+    <div class="panneau cache" id="panneau"></div>
+    <div id="liste"></div>
+  </section>
+
+  <!-- TROUVER (quiz) -->
+  <section id="v-trouver" class="cache"></section>
+
+  <!-- APPRENDRE -->
+  <section id="v-apprendre" class="cache"></section>
+
+  <!-- FAVORIS -->
+  <section id="v-favoris" class="cache">
+    <h2>Mes favoris</h2>
+    <p class="sous">Enregistrés uniquement sur ce téléphone.</p>
+    <div id="liste-fav"></div>
+  </section>
+</main>
+
+<nav>
+  <button data-v="explorer" class="on"><span class="ic">🧭</span>Explorer</button>
+  <button data-v="trouver"><span class="ic">✨</span>Pour moi</button>
+  <button data-v="apprendre"><span class="ic">📚</span>Apprendre</button>
+  <button data-v="favoris"><span class="ic">♡</span>Favoris</button>
+</nav>
+
+<script src="data.js"></script>
+<script src="edu.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
